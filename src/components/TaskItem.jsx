@@ -1,0 +1,90 @@
+import React from 'react';
+
+const TaskItem = ({ task, onToggleComplete, onDeleteTask }) => {
+  const priorityColors = {
+    high: '#dc2626',
+    medium: '#ca8a04',
+    low: '#16a34a',
+  };
+
+  const priorityColor = priorityColors[task.priority] || '#6b7280';
+
+  const taskItemStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '1rem',
+    marginBottom: '0.75rem',
+    border: `2px solid ${priorityColor}`,
+    borderRadius: '8px',
+    backgroundColor: task.completed ? '#f3f4f6' : '#ffffff',
+    opacity: task.completed ? 0.7 : 1,
+    transition: 'all 0.3s ease',
+  };
+
+  const titleStyle = {
+    flex: 1,
+    textDecoration: task.completed ? 'line-through' : 'none',
+     color: task.completed ? '#6b7280' : priorityColor,
+    fontSize: '1rem',
+    fontWeight: task.completed ? 'normal' : '500',
+  };
+
+
+  const buttonContainerStyle = {
+    display: 'flex',
+     gap: '0.75rem',
+    marginLeft: '1rem',
+     alignItems: 'center',
+  };
+
+    const checkboxStyle = {
+      width: '20px',
+      height: '20px',
+      cursor: 'pointer',
+      accentColor: priorityColor,
+    };
+
+  const deleteButtonStyle = {
+      padding: '0.25rem 0.5rem',
+      fontSize: '1.25rem',
+      lineHeight: '1',
+      border: 'none',
+      background: 'none',
+      color: '#ef4444',
+      cursor: 'pointer',
+      transition: 'all 0.2s ease',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minWidth: '24px',
+  };
+
+  return (
+    <div style={taskItemStyle}>
+      <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+        <span style={titleStyle}>{task.title}</span>
+      </div>
+      <div style={buttonContainerStyle}>
+         <input
+           type="checkbox"
+           checked={task.completed}
+           onChange={() => onToggleComplete(task.id)}
+           style={checkboxStyle}
+           aria-label="Toggle task completion"
+         />
+        <button
+          style={deleteButtonStyle}
+          onClick={() => onDeleteTask(task.id)}
+           onMouseEnter={(e) => (e.target.style.transform = 'scale(1.2)')}
+           onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
+           aria-label="Delete task"
+        >
+           ✕
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default TaskItem;

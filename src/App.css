@@ -1,42 +1,108 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+* {
+  box-sizing: border-box;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Desktop Layout (> 768px) */
+@media (min-width: 769px) {
+  #root > div > div {
+    flex-direction: row !important;
   }
-  to {
-    transform: rotate(360deg);
+
+  #root > div > div > div:first-child {
+    flex: 0 0 35% !important;
+    min-width: 350px !important;
+  }
+
+  #root > div > div > div:last-child {
+    flex: 1 !important;
+    min-width: 0 !important;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Mobile Layout (< 768px) */
+@media (max-width: 768px) {
+  #root > div > div {
+    flex-direction: column !important;
+  }
+
+  #root > div > div > div {
+    width: 100% !important;
+    min-width: 100% !important;
   }
 }
 
-.card {
-  padding: 2em;
+/* Utility classes for responsive adjustments */
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.read-the-docs {
-  color: #888;
+@media (max-width: 600px) {
+  .task-item {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .task-item button {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem !important;
+  }
 }
+
+
+/* Desktop horizontal layout using columns */
+@media (min-width: 769px) {
+  .app-root {
+    max-width: none !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 2rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 2rem !important;
+    align-items: stretch !important;
+  }
+
+  .left-column {
+    flex: 0 0 35% !important;
+    min-width: 320px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  .right-column {
+    flex: 1 1 65% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: auto !important;
+  }
+
+  .header-section, .counter-section {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  }
+
+  .task-list-section {
+    background: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+    height: calc(100vh - 4rem) !important;
+    overflow: auto !important;
+  }
+}
+
