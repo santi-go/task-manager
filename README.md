@@ -1,5 +1,9 @@
 # Task Manager
 
+pre-requisites:
+
+- Node.js 20.19.0 or newer (including ≥ 22.12.0).
+
 To run the app locally follow this guide:
 
 1 - on the root folder of the app on the terminal run `npm install`
