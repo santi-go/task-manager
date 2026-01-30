@@ -1,6 +1,6 @@
 import TaskItem from './TaskItem';
 
-const TaskList = ({ tasks, onToggleComplete, onDeleteTask, onEditTask }) => {
+const TaskList = ({ tasks, onToggleComplete, onDeleteTask, onEditTask, isLoading }) => {
   const emptyStateStyle = {
     textAlign: 'center',
     padding: '3rem 1rem',
@@ -31,6 +31,7 @@ const TaskList = ({ tasks, onToggleComplete, onDeleteTask, onEditTask }) => {
           onToggleComplete={onToggleComplete}
           onDeleteTask={onDeleteTask}
           onEditTask={onEditTask}
+          isLoading={isLoading}
         />
       ))}
     </div>

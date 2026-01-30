@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask }) => {
+const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask, isLoading }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(task.title);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     setEditTitle(task.title);
@@ -22,9 +23,11 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask }) => {
     marginBottom: '0.75rem',
     border: `2px solid ${priorityColor}`,
     borderRadius: '8px',
-    backgroundColor: task.completed ? '#f3f4f6' : '#ffffff',
+    backgroundColor: isHovered ? (task.completed ? '#e5e7eb' : '#f9fafb') : (task.completed ? '#f3f4f6' : '#ffffff'),
     opacity: task.completed ? 0.7 : 1,
-    transition: 'all 0.3s ease',
+    transition: 'all 0.2s ease',
+    boxShadow: isHovered ? '0 4px 12px rgba(0, 0, 0, 0.1)' : '0 1px 3px rgba(0, 0, 0, 0.06)',
+    cursor: 'default',
   };
 
   const titleStyle = {
@@ -56,17 +59,22 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask }) => {
       lineHeight: '1',
       border: 'none',
       background: 'none',
-      color: '#ef4444',
-      cursor: 'pointer',
+      color: isLoading ? '#9ca3af' : '#ef4444',
+      cursor: isLoading ? 'not-allowed' : 'pointer',
       transition: 'all 0.2s ease',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       minWidth: '24px',
+      opacity: isLoading ? 0.5 : (isHovered ? 1 : 0.7),
   };
 
   return (
-    <div style={taskItemStyle}>
+    <div
+      style={taskItemStyle}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
         {isEditing ? (
           <input
@@ -112,11 +120,12 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask }) => {
         <button
           style={deleteButtonStyle}
           onClick={() => onDeleteTask(task.id)}
-           onMouseEnter={(e) => (e.target.style.transform = 'scale(1.2)')}
-           onMouseLeave={(e) => (e.target.style.transform = 'scale(1)')}
-           aria-label="Delete task"
+          onMouseEnter={(e) => !isLoading && (e.target.style.transform = 'scale(1.2)')}
+          onMouseLeave={(e) => !isLoading && (e.target.style.transform = 'scale(1)')}
+          aria-label="Delete task"
+          disabled={isLoading}
         >
-           ✕
+          {isLoading ? '⏳' : '✕'}
         </button>
       </div>
     </div>

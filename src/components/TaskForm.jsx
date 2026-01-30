@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const TaskForm = ({ onAddTask }) => {
+const TaskForm = ({ onAddTask, isLoading }) => {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState('medium');
 
@@ -45,10 +45,10 @@ const TaskForm = ({ onAddTask }) => {
   const inputStyle = {
     padding: '0.75rem',
     fontSize: '1rem',
-    border: '1px solid #d1d5db',
+    border: '2px solid #d1d5db',
     borderRadius: '4px',
     fontFamily: 'inherit',
-    transition: 'border-color 0.2s ease',
+    transition: 'all 0.2s ease',
   };
 
   const selectStyle = {
@@ -66,12 +66,13 @@ const TaskForm = ({ onAddTask }) => {
     fontSize: '1rem',
     fontWeight: '600',
     color: 'white',
-    backgroundColor: '#3b82f6',
+    backgroundColor: isLoading ? '#9ca3af' : '#3b82f6',
     border: 'none',
     borderRadius: '4px',
-    cursor: 'pointer',
+    cursor: isLoading ? 'not-allowed' : 'pointer',
     transition: 'all 0.2s ease',
     flex: 1,
+    opacity: isLoading ? 0.6 : 1,
   };
 
   const resetButtonStyle = {
@@ -93,6 +94,10 @@ const TaskForm = ({ onAddTask }) => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Enter a new task..."
+          required
+          minLength={3}
+          maxLength={100}
+          disabled={isLoading}
           onFocus={(e) => (e.target.style.borderColor = '#3b82f6')}
           onBlur={(e) => (e.target.style.borderColor = '#d1d5db')}
         />
@@ -107,6 +112,7 @@ const TaskForm = ({ onAddTask }) => {
           style={selectStyle}
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
+          disabled={isLoading}
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -118,20 +124,22 @@ const TaskForm = ({ onAddTask }) => {
         <button
           style={submitButtonStyle}
           type="submit"
-          onMouseEnter={(e) => (e.target.style.opacity = '0.9')}
-          onMouseLeave={(e) => (e.target.style.opacity = '1')}
+          disabled={isLoading}
+          onMouseEnter={(e) => !isLoading && (e.target.style.opacity = '0.85')}
+          onMouseLeave={(e) => !isLoading && (e.target.style.opacity = '1')}
         >
-          Add Task
+          {isLoading ? 'Adding...' : 'Add Task'}
         </button>
         <button
           style={resetButtonStyle}
           type="reset"
+          disabled={isLoading}
           onClick={() => {
             setTitle('');
             setPriority('medium');
           }}
-          onMouseEnter={(e) => (e.target.style.opacity = '0.9')}
-          onMouseLeave={(e) => (e.target.style.opacity = '1')}
+          onMouseEnter={(e) => !isLoading && (e.target.style.opacity = '0.85')}
+          onMouseLeave={(e) => !isLoading && (e.target.style.opacity = '1')}
         >
           Clear
         </button>

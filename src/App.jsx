@@ -17,9 +17,14 @@ function App() {
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleAddTask = (newTask) => {
-    setTasks([newTask, ...tasks]);
+    setIsLoading(true);
+    setTimeout(() => {
+      setTasks([newTask, ...tasks]);
+      setIsLoading(false);
+    }, 300);
   };
 
   const handleEditTask = (taskId, newTitle) => {
@@ -38,7 +43,11 @@ function App() {
 
   const handleDeleteTask = (taskId) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
-      setTasks(tasks.filter((task) => task.id !== taskId));
+      setIsLoading(true);
+      setTimeout(() => {
+        setTasks(tasks.filter((task) => task.id !== taskId));
+        setIsLoading(false);
+      }, 1000);
     }
   };
 
@@ -93,6 +102,7 @@ function App() {
     padding: '2rem',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
   };
+
   const filteredTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase());
     if (statusFilter === 'complete') return matchesSearch && t.completed;
@@ -113,10 +123,10 @@ function App() {
       <div className="left-column">
         <div className="header-section" style={headerSectionStyle}>
           <header style={headerStyle}>
-            <h1 style={titleStyle}>📋 Task Manager</h1>
+            <h1 style={titleStyle}>Task Manager</h1>
             <p style={subtitleStyle}>Organize and track your daily tasks</p>
           </header>
-          <TaskForm onAddTask={handleAddTask} />
+          <TaskForm onAddTask={handleAddTask} isLoading={isLoading} />
         </div>
 
         <div className="counter-section" style={counterSectionStyle}>
@@ -139,6 +149,7 @@ function App() {
             onToggleComplete={handleToggleComplete}
             onDeleteTask={handleDeleteTask}
             onEditTask={handleEditTask}
+            isLoading={isLoading}
           />
         </div>
       </div>
