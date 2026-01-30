@@ -1,6 +1,11 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+const TaskItem = ({ task, onToggleComplete, onDeleteTask, onEditTask }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState(task.title);
 
-const TaskItem = ({ task, onToggleComplete, onDeleteTask }) => {
+  useEffect(() => {
+    setEditTitle(task.title);
+  }, [task.title]);
   const priorityColors = {
     high: '#dc2626',
     medium: '#ca8a04',
@@ -63,7 +68,38 @@ const TaskItem = ({ task, onToggleComplete, onDeleteTask }) => {
   return (
     <div style={taskItemStyle}>
       <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-        <span style={titleStyle}>{task.title}</span>
+        {isEditing ? (
+          <input
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            onBlur={() => {
+              const trimmed = editTitle.trim();
+              if (trimmed && trimmed !== task.title) {
+                onEditTask?.(task.id, trimmed);
+              }
+              setIsEditing(false);
+              setEditTitle(task.title);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                const trimmed = editTitle.trim();
+                if (trimmed && trimmed !== task.title) {
+                  onEditTask?.(task.id, trimmed);
+                }
+                setIsEditing(false);
+                setEditTitle(task.title);
+              }
+              if (e.key === 'Escape') {
+                setEditTitle(task.title);
+                setIsEditing(false);
+              }
+            }}
+            autoFocus
+            style={{ ...titleStyle, border: '1px solid #d1d5db', padding: '0.5rem', borderRadius: '6px' }}
+          />
+        ) : (
+          <span style={titleStyle} onClick={() => setIsEditing(true)}>{task.title}</span>
+        )}
       </div>
       <div style={buttonContainerStyle}>
          <input

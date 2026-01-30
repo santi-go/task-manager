@@ -1,14 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import TaskStats from './components/TaskStats';
+import TaskControls from './components/TaskControls';
 import './App.css';
 
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const raw = localStorage.getItem('tasks_v1');
+    try {
+      const parsed = JSON.parse(raw || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   const handleAddTask = (newTask) => {
     setTasks([newTask, ...tasks]);
+  };
+
+  const handleEditTask = (taskId, newTitle) => {
+    setTasks(
+      tasks.map((t) => (t.id === taskId ? { ...t, title: newTitle } : t))
+    );
   };
 
   const handleToggleComplete = (taskId) => {
@@ -76,6 +93,20 @@ function App() {
     padding: '2rem',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
   };
+  const filteredTasks = tasks.filter((t) => {
+    const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase());
+    if (statusFilter === 'complete') return matchesSearch && t.completed;
+    if (statusFilter === 'incomplete') return matchesSearch && !t.completed;
+    return matchesSearch;
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('tasks_v1', JSON.stringify(tasks));
+    } catch (e) {
+      console.error('Failed to save tasks to localStorage:', e);
+    }
+  }, [tasks]);
 
   return (
     <div style={appContainerStyle} className="app-root">
@@ -89,16 +120,25 @@ function App() {
         </div>
 
         <div className="counter-section" style={counterSectionStyle}>
-          <TaskStats tasks={tasks} />
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+            <TaskStats tasks={filteredTasks} />
+            <TaskControls
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              statusFilter={statusFilter}
+              setStatusFilter={setStatusFilter}
+            />
+          </div>
         </div>
       </div>
 
       <div className="right-column">
         <div className="task-list-section" style={taskListSectionStyle}>
           <TaskList
-            tasks={tasks}
+            tasks={filteredTasks}
             onToggleComplete={handleToggleComplete}
             onDeleteTask={handleDeleteTask}
+            onEditTask={handleEditTask}
           />
         </div>
       </div>

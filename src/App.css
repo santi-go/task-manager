@@ -7,7 +7,6 @@
   box-sizing: border-box;
 }
 
-/* Desktop Layout (> 768px) */
 @media (min-width: 769px) {
   #root > div > div {
     flex-direction: row !important;
@@ -24,7 +23,6 @@
   }
 }
 
-/* Mobile Layout (< 768px) */
 @media (max-width: 768px) {
   #root > div > div {
     flex-direction: column !important;
@@ -36,7 +34,6 @@
   }
 }
 
-/* Utility classes for responsive adjustments */
 .task-item {
   display: flex;
   justify-content: space-between;
@@ -55,54 +52,54 @@
   }
 }
 
-
-/* Desktop horizontal layout using columns */
 @media (min-width: 769px) {
   .app-root {
     max-width: none !important;
     width: 100vw !important;
     min-height: 100vh !important;
-    height: 100vh !important;
+    height: auto !important;
     margin: 0 !important;
     padding: 2rem !important;
     display: flex !important;
     flex-direction: row !important;
     gap: 2rem !important;
-    align-items: stretch !important;
+    align-items: flex-start !important;
   }
 
   .left-column {
-    flex: 0 0 35% !important;
-    min-width: 320px !important;
+    flex: 0 0 clamp(280px, 25vw, 400px) !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 1rem !important;
+    height: fit-content !important;
   }
 
   .right-column {
-    flex: 1 1 65% !important;
+    flex: 1 1 auto !important;
     min-width: 0 !important;
     display: flex !important;
     flex-direction: column !important;
-    overflow: auto !important;
   }
 
   .header-section, .counter-section {
     background: #ffffff !important;
     border: 1px solid #e5e7eb !important;
-    border-radius: 8px !important;
+    border-radius: 0.5rem !important;
     padding: 1rem !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+    min-height: fit-content !important;
   }
 
   .task-list-section {
     background: #ffffff !important;
     border: 1px solid #e5e7eb !important;
-    border-radius: 8px !important;
+    border-radius: 0.5rem !important;
     padding: 1rem !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
-    height: calc(100vh - 4rem) !important;
-    overflow: auto !important;
+    min-height: auto !important;
+    max-height: calc(100vh - 4rem) !important;
+    overflow-y: auto !important;
+    flex: 1 !important;
   }
 }
 

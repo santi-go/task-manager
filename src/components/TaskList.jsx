@@ -1,7 +1,6 @@
-import React from 'react';
 import TaskItem from './TaskItem';
 
-const TaskList = ({ tasks, onToggleComplete, onDeleteTask }) => {
+const TaskList = ({ tasks, onToggleComplete, onDeleteTask, onEditTask }) => {
   const emptyStateStyle = {
     textAlign: 'center',
     padding: '3rem 1rem',
@@ -31,6 +30,7 @@ const TaskList = ({ tasks, onToggleComplete, onDeleteTask }) => {
           task={task}
           onToggleComplete={onToggleComplete}
           onDeleteTask={onDeleteTask}
+          onEditTask={onEditTask}
         />
       ))}
     </div>
